@@ -6,7 +6,7 @@
 /*   By: relamine <relamine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:17:45 by relamine          #+#    #+#             */
-/*   Updated: 2023/12/13 13:22:50 by relamine         ###   ########.fr       */
+/*   Updated: 2023/12/18 09:53:09 by relamine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-char *get_next_line(int fd);
-
+char    *get_next_line(int fd);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strchr(const char *s, int c);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+size_t	ft_strlen(const char *s);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 #endif
