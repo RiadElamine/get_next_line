@@ -6,7 +6,7 @@
 /*   By: relamine <relamine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 22:15:45 by relamine          #+#    #+#             */
-/*   Updated: 2023/12/21 02:51:04 by relamine         ###   ########.fr       */
+/*   Updated: 2023/12/21 08:22:07 by relamine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 #endif
 
 
-// void f()
-// {
-//   system("leaks a.out");
-// }
+void f()
+{
+  system("leaks a.out");
+}
 
 static int reading(char **arr, int fd, char ** overneed)
 {
