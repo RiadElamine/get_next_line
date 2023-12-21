@@ -6,7 +6,7 @@
 /*   By: relamine <relamine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:40:23 by relamine          #+#    #+#             */
-/*   Updated: 2023/12/18 10:27:40 by relamine         ###   ########.fr       */
+/*   Updated: 2023/12/21 08:03:47 by relamine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ char	*ft_strchr(const char *s, int c)
 		la++;
 	}
 	return (NULL);
-	
 }
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -119,4 +118,3 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	ft_strlcpy(res, &s[start], size);
 	return (res);
 }
-
