@@ -6,7 +6,7 @@
 /*   By: relamine <relamine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 22:15:45 by relamine          #+#    #+#             */
-/*   Updated: 2023/12/18 23:15:10 by relamine         ###   ########.fr       */
+/*   Updated: 2023/12/21 02:51:04 by relamine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,124 +18,78 @@
 #endif
 
 
-void f()
+// void f()
+// {
+//   system("leaks a.out");
+// }
+
+static int reading(char **arr, int fd, char ** overneed)
 {
-  system("leaks a.out");
-}
-
-
-// This For Reading From Overneed variable
-static void rd_from_over(char *overneed, char *re)
-{
-  char *tmp = NULL;
-
-  if (re != NULL)
-  {
-    char *chr_nl = ft_strchr(re, '\n');
-    if (chr_nl)
-    {
-      int size = (int)(chr_nl - re) + 1;
-      ft_strlcpy(re, overneed, sizeof(size));
-      tmp = overneed;
-      overneed = ft_substr(overneed, (int)(chr_nl - re) + 1, sizeof(overneed));
-      free(tmp);
-    }
-    else
-    {
-      ft_strlcpy(re, overneed, sizeof(overneed));
-    }
-    
-  }
-}
-char *get_next_line(int fd) {
-  int index = 0;
-  static char *overneed = NULL;
-  char *arr;
-  char *rs = NULL;
-  char *tmp = NULL;
-  static int count = 0;
-  int checkline = 0;
-
-  arr = malloc(BUFFER_SIZE + 1);
+  int i;
+  int index;
+  char *tmp;
   ssize_t byte_reading;
 
-  checkline = count;
-  while (index < BUFFER_SIZE)
+  i = 0;
+  index = 0;
+  byte_reading = read(fd, *arr, BUFFER_SIZE);
+  if (byte_reading == -1)
+      return (-1);
+  else if (!byte_reading)
+      return (0);
+  char *chrs = ft_strchr(*arr, '\n');
+  if (chrs)
   {
-    if (overneed == NULL)
-    {
-      byte_reading = read(fd, arr, BUFFER_SIZE);
-      if (byte_reading == -1)
-        return (NULL);
-      else if (!byte_reading)
-        break;
-    }
-    else
-    {
-      byte_reading = read(fd, arr, BUFFER_SIZE);
-      if (byte_reading == -1)
-        return (NULL);
-
-      if(count == checkline)
-      {
-        char *addfront = malloc(BUFFER_SIZE + 1);
-        rd_from_over(overneed, addfront);
-        tmp = arr;
-        arr = ft_strjoin(addfront,tmp);
-        free(tmp);
-        free(addfront);
-      }
-      checkline++;
-      if (!byte_reading)
-        break;
-    }
-    // this for to end the process of reading line && save overreding word in overneed
-    char *chrs = ft_strchr(arr, '\n');
-    if (chrs)
-    {
-      index = (int)(chrs - arr);
-      if (overneed == NULL && arr)
-        overneed = ft_substr(arr,index + 1, BUFFER_SIZE);
-      else if(arr)
-      {
-        tmp = overneed;
-        overneed = ft_strjoin(tmp,arr);
-        free(tmp);
-      }
-      arr[index + 1] = '\0';
-      tmp = rs;
-      rs = ft_strjoin(tmp,arr);
-      free(arr);
-      if (tmp)
-        free(tmp);
-      break;
-    }
-    index = BUFFER_SIZE;
-
-    //this for complete process of reading line
-    if (index == BUFFER_SIZE)
-    {
-      tmp = rs;
-      rs = ft_strjoin(tmp,arr);
-      free(tmp);
-
-      //initialisation
-      index = 0;
-      free(arr);
-      arr = malloc(BUFFER_SIZE + 1);
-    }
+    tmp = *overneed;
+    *overneed = ft_strjoin(tmp, chrs + 1);
+    free(tmp);
+    printf("----%s---",*overneed);
+    tmp = *arr;
+    *arr = ft_substr(*arr,0, (int)(chrs - *arr) + 1);
+    free(tmp);
+    return (1);
   }
-  count++;
+  return(2);
+}
+
+char *get_next_line(int fd)
+{
+  char *arr;
+  char *rs = NULL;
+
+  static char *overneed = NULL;
+  int check;
+
+  char *s;
+  arr = malloc(BUFFER_SIZE + 1);
+  check = reading(&arr, fd, &overneed);
+  rs = ft_strjoin(arr, NULL);
+  free(arr);
+  arr = NULL;
+  while (check == 2)
+  {
+    arr = malloc(BUFFER_SIZE + 1);
+    check = reading(&arr, fd, &overneed);
+    s =rs;
+    rs = ft_strjoin(s, arr);
+    free(s);
+    rs = NULL;
+  }
+  if (!check)
+    return (rs);
+  else if (check == -1)
+    return (NULL);
   return (rs);
 }
 
 
 int main()
  {
-  
   int fd = open("file.txt", O_RDONLY);
+  if (fd == -1)
+      return (-1);
   char *line = get_next_line(fd);
-  printf("%s",line);
+  printf("\n####%s####",line);
   // while (line)
   // {
   //   printf("%s",line);
