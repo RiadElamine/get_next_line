@@ -6,7 +6,7 @@
 /*   By: relamine <relamine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:40:23 by relamine          #+#    #+#             */
-/*   Updated: 2023/12/21 08:03:47 by relamine         ###   ########.fr       */
+/*   Updated: 2023/12/25 08:07:29 by relamine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-static char	*ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1)
 {
 	char	*s2;
 	int		i;
@@ -39,7 +39,7 @@ static char	*ft_strdup(const char *s1)
 	s2[i] = '\0';
 	return (s2);
 }
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+static size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	src_len;
 	size_t	j;
