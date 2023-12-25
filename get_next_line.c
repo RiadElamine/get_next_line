@@ -6,7 +6,7 @@
 /*   By: relamine <relamine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 22:15:45 by relamine          #+#    #+#             */
-/*   Updated: 2023/12/25 08:24:59 by relamine         ###   ########.fr       */
+/*   Updated: 2023/12/25 11:14:35 by relamine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 //   system("leaks a.out");
 // }
 
-char    *get_line(char **buffer)
+char    *line_get(char **buffer)
 {
     char *line;
     char *findnl;
@@ -32,6 +32,11 @@ char    *get_line(char **buffer)
         tmp = *buffer;
         *buffer = ft_substr(*buffer, (int)(findnl - *buffer) + 1, ft_strlen(findnl + 1));
         free(tmp);
+        if (!**buffer)
+        {
+            free(*buffer);
+            *buffer = NULL;
+        }
     }
     else
     { 
@@ -50,9 +55,10 @@ char    *reading(char **buffer, int fd)
     byte = 1;
     while (byte > 0)
     {
-
-        arr = malloc(BUFFER_SIZE + 1);
+        arr = malloc((size_t)BUFFER_SIZE + 1);
         byte = read(fd, arr, BUFFER_SIZE);
+        if (byte == -1)
+            return (free(arr), free(*buffer), NULL);
         arr[byte] = '\0';
         tmp = *buffer;
         *buffer = ft_strjoin(*buffer, arr);
@@ -61,7 +67,7 @@ char    *reading(char **buffer, int fd)
             free(tmp);
             free(arr);
         }
-        if (byte == -1 || (byte == 0 && !tmp))
+        if (byte == 0 && !tmp)
             return (free(*buffer), NULL);
         if  (ft_strchr(*buffer, '\n'))
             byte = 0;
@@ -72,9 +78,13 @@ char    *get_next_line(int fd)
 {
 
     static char *buffer;
-    buffer = reading(&buffer, fd);
-    if  (buffer)
-        return (get_line(&buffer));      
+
+    if (fd >= 0 && fd <= OPEN_MAX)
+    {
+        buffer = reading(&buffer, fd);
+        if  (buffer)
+            return (line_get(&buffer));    
+    }
     return (NULL);
 }
 
@@ -86,28 +96,29 @@ char    *get_next_line(int fd)
 //     int fd = open("file.txt", O_RDONLY);
 //     if (fd == -1)
 //         return (-1);
-//     // close (fd);
+    
 //     char *line = get_next_line(fd);
-//     printf("\n####%s####",line);
+//     printf("####%s####",line);
 //     free(line);
 
+//     close (fd);
 //     line = get_next_line(fd);
 //     printf("\n####%s####",line);
 //     free(line);
     
-//     line = get_next_line(fd);
-//     printf("\n####%s####",line);
-//     free(line);
+//     // line = get_next_line(fd);
+//     // printf("\n####%s####",line);
+//     // free(line);
     
-//     line = get_next_line(fd);
-//     printf("\n####%s####",line);
-//     free(line);
+//     // line = get_next_line(fd);
+//     // printf("\n####%s####",line);
+//     // free(line);
     
-//     line = get_next_line(fd);
-//     printf("\n####%s####",line);
+//     // line = get_next_line(fd);
+//     // printf("\n####%s####",line);
    
-//     line = get_next_line(fd);
-//     printf("\n####%s####",line);
+//     // line = get_next_line(fd);
+//     // printf("\n####%s####",line);
 
 // // free(line);
 //     // while (line != NULL)
@@ -116,7 +127,7 @@ char    *get_next_line(int fd)
 //     //     free(line);
 //     //     line = get_next_line(fd);
 //     // }
-//     atexit(f);
+//     // atexit(f);
 //     return (0);
 //  }
  
