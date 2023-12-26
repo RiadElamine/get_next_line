@@ -6,7 +6,7 @@
 /*   By: relamine <relamine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 22:15:45 by relamine          #+#    #+#             */
-/*   Updated: 2023/12/25 11:14:35 by relamine         ###   ########.fr       */
+/*   Updated: 2023/12/26 11:23:48 by relamine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,29 @@
 #include "get_next_line.h"
 
 
-// void f()
-// {
-//   system("leaks a.out");
-// }
+void f()
+{
+  system("leaks a.out");
+}
 
 char    *line_get(char **buffer)
 {
     char *line;
-    char *findnl;
+    int  findnl;
     char *tmp;
+    size_t len;
 
     findnl = ft_strchr(*buffer, '\n');
-    if (findnl)
+    if (findnl != -1)
     {
-        line = ft_substr(*buffer, 0, (int)(findnl - *buffer) + 1);
+        line = ft_substr(*buffer, 0, findnl + 1);
         tmp = *buffer;
-        *buffer = ft_substr(*buffer, (int)(findnl - *buffer) + 1, ft_strlen(findnl + 1));
+        len = ft_strlen(&(tmp[findnl + 1])); 
+        if (len != 0)
+            *buffer = ft_substr(tmp, findnl + 1, len);
+        else
+            return (free(tmp), *buffer = NULL, line);
         free(tmp);
-        if (!**buffer)
-        {
-            free(*buffer);
-            *buffer = NULL;
-        }
     }
     else
     { 
@@ -50,29 +50,25 @@ char    *reading(char **buffer, int fd)
 {
     int byte;
     char *arr;
-    char *tmp;
 
-    byte = 1;
+    arr = malloc((size_t)BUFFER_SIZE + 1);
+    byte = read(fd, arr, BUFFER_SIZE);
+    if (byte == -1)
+        return (free(arr), free(*buffer), NULL);
     while (byte > 0)
     {
-        arr = malloc((size_t)BUFFER_SIZE + 1);
+        arr[byte] = '\0';
+
+        *buffer = ft_strjoin(*buffer, arr);
+
+        if  (ft_strchr(arr, '\n') != -1)
+            break;
+
         byte = read(fd, arr, BUFFER_SIZE);
         if (byte == -1)
-            return (free(arr), free(*buffer), NULL);
-        arr[byte] = '\0';
-        tmp = *buffer;
-        *buffer = ft_strjoin(*buffer, arr);
-        if (arr)
-        {
-            free(tmp);
-            free(arr);
-        }
-        if (byte == 0 && !tmp)
-            return (free(*buffer), NULL);
-        if  (ft_strchr(*buffer, '\n'))
-            byte = 0;
+            return (free(arr), NULL);
     }
-    return (*buffer);
+    return (free(arr), *buffer);
 }
 char    *get_next_line(int fd)
 {
@@ -83,9 +79,9 @@ char    *get_next_line(int fd)
     {
         buffer = reading(&buffer, fd);
         if  (buffer)
-            return (line_get(&buffer));    
+            return (line_get(&buffer));
     }
-    return (NULL);
+    return (buffer);
 }
 
     // if (fd < 0 || fd > OPEN_MAX)
@@ -127,7 +123,45 @@ char    *get_next_line(int fd)
 //     //     free(line);
 //     //     line = get_next_line(fd);
 //     // }
-//     // atexit(f);
+//     atexit(f);
 //     return (0);
 //  }
  
+
+
+
+
+
+
+
+
+
+
+
+
+//  char    *reading(char **buffer, int fd)
+// {
+//     int byte;
+//     char *arr;
+
+//     arr = malloc((size_t)BUFFER_SIZE + 1);
+//     if (!arr)
+//         return(free(*buffer), NULL);
+//     byte = read(fd, arr, BUFFER_SIZE);
+//     if (byte == -1)
+//         return (free(arr), free(*buffer), NULL);
+//     while (byte >= 0)
+//     {
+//         arr[byte] = '\0';
+//         *buffer = ft_strjoin(*buffer, arr);
+//         free(arr);
+//         if (byte == 0 && !*buffer[0])
+//             return (free(*buffer), NULL);
+//         if  (ft_strchr(*buffer, '\n'))
+//             break;
+//         byte = read(fd, arr, BUFFER_SIZE);
+//         if (byte == -1)
+//         return (free(arr), free(*buffer), NULL);
+//     }
+//     return (*buffer);
+// }
