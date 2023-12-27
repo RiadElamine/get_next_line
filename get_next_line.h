@@ -6,7 +6,7 @@
 /*   By: relamine <relamine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 13:17:45 by relamine          #+#    #+#             */
-/*   Updated: 2023/12/26 08:23:04 by relamine         ###   ########.fr       */
+/*   Updated: 2023/12/26 13:02:03 by relamine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define GET_NEXT_LINE_H
 
 #ifndef BUFFER_SIZE
-#define BUFFER_SIZE 4
+#define BUFFER_SIZE 10
 #endif
 
 #include <stdio.h>
