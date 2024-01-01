@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: relamine <relamine@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/12 22:15:45 by relamine          #+#    #+#             */
-/*   Updated: 2024/01/02 00:26:47 by relamine         ###   ########.fr       */
+/*   Created: 2023/12/28 10:27:20 by relamine          #+#    #+#             */
+/*   Updated: 2024/01/02 00:25:10 by relamine         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char    *ft_line_get(char **buffer)
 {
@@ -66,62 +65,45 @@ char    *ft_reading(char *buffer, int fd)
 char    *get_next_line(int fd)
 {
 
-    static char *buffer;
+    static char *buffer[OPEN_MAX];
 
     if ((fd >= 0 && fd <= OPEN_MAX ) && BUFFER_SIZE >= 0)
     {
-        buffer = ft_reading(buffer, fd);
-        if  (buffer)
-            return (ft_line_get(&buffer));
+        buffer[fd] = ft_reading(buffer[fd], fd);
+        if  (buffer[fd])
+            return (ft_line_get(&buffer[fd]));
     }
     return (NULL);
 }
+
 
 // void f()
 // {
 //   system("leaks a.out");
 // }
-
 // int main()
-//  {
-    
-//     int fd = open("file.txt", O_RDWR);
-//     if (fd == -1)
+// {
+//     int fd = open("file2.txt", O_RDONLY);
+//     if (!fd)
 //         return (-1);
-//     // write(fd, "ABCDHAYOUB", 10);
-//     // lseek(fd, 0, SEEK_SET);
-//     // lseek(fd, -5, SEEK_END);
-//     char *line = get_next_line(fd);
-//     printf("####%s####",line);
-//     free(line);
+//     char *s = get_next_line(fd);
+//     printf("%s", s);
+//     free(s);
+// s = get_next_line(fd);
+//     printf("%s", s);
+//     free(s);
+//     // int fd1 = open("file3.txt", O_RDONLY);
+//     // if (!fd1)
+//     //     return (-1);
+//     // char *s1 = get_next_line(fd1);
+//     // printf("%s", s1);
+//     // free(s1);
+//     // // int fd2 = open("file2.txt", O_RDONLY);
+//     // // if (!fd2)
+//     // //     return (-1);
+//     // s = get_next_line(fd);
+//     // printf("%s", s);
+//     // free(s);
 
-//     // close (fd);
-//     line = get_next_line(fd);
-//     printf("\n####%s####",line);
-//     free(line);
-    
-//     // line = get_next_line(fd);
-//     // printf("\n####%s####",line);
-//     // free(line);
-    
-//     // line = get_next_line(fd);
-//     // printf("\n####%s####",line);
-//     // free(line);
-    
-//     // line = get_next_line(fd);
-//     // printf("\n####%s####",line);
-   
-//     // line = get_next_line(fd);
-//     // printf("\n####%s####",line);
-
-// // free(line);
-//     // while (line != NULL)
-//     // {
-//     //     printf("%s",line);
-//     //     free(line);
-//     //     line = get_next_line(fd);
-//     // }
-//     // atexit(f);
-//     return (0);
-//  }
- 
+//     atexit(f);
+// }
