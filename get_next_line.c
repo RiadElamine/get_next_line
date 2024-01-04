@@ -13,7 +13,7 @@
 
 #include "get_next_line.h"
 
-char    *ft_line_get(char **buffer)
+static char    *ft_line_get(char **buffer)
 {
     char *line;
     int  findnl;
@@ -38,7 +38,7 @@ char    *ft_line_get(char **buffer)
     *buffer = ft_substr(tmp, findnl + 1, len);
     return (free(tmp), line); 
 }
-char    *ft_reading(char *buffer, int fd)
+static char    *ft_reading(char *buffer, int fd)
 {
     ssize_t byte;
     char *arr;
