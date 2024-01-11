@@ -47,8 +47,6 @@ static char    *ft_reading(char *buffer, int fd)
     if (!arr)
         return (free(buffer), NULL);
     byte = read(fd, arr, BUFFER_SIZE);
-    if (byte == -1) 
-        return (free(arr), free(buffer), NULL);
     while (byte > 0)
     {
         arr[byte] = '\0';
@@ -58,9 +56,9 @@ static char    *ft_reading(char *buffer, int fd)
         if  (ft_strchr(arr, '\n') != -1)
             break;
         byte = read(fd, arr, BUFFER_SIZE);
-        if (byte == -1)
-            return (free(arr), NULL);
     }
+    if (byte == -1)
+        return (free(arr), free(buffer), NULL);
     return (free(arr), buffer);
 }
 char    *get_next_line(int fd)
