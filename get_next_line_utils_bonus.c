@@ -12,7 +12,7 @@
 
 #include "get_next_line_bonus.h"
 
-size_t	ft_strlen(const char *s)
+static size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
@@ -42,31 +42,26 @@ char	*ft_strdup(const char *s1)
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-    char	*rs;
-    int     i;
-    int     j;
-    size_t  lens1;
-    size_t  lens2;  
+	char	*rs;
+	int		i;
+	int		j;
 
-    if(!s1)
-        return (ft_strdup(s2));
-    lens1 = ft_strlen(s1);
-    lens2 = ft_strlen(s2);
-    rs = malloc(lens1 + lens2 + 1);
-    if (!rs)
-        return (free((char *)s1), free((char *)s2), NULL);
-    rs[lens1 + lens2] = '\0';
-    i = 0;
-    while (s1[i])
-    {
-        rs[i] = s1[i];
-        i++;
-    }
-    j = 0;
-    while (s2[j])
-        rs[i++] = s2[j++];
-    return (free((char *)s1), rs);
+	if (!s1)
+		return (ft_strdup(s2));
+	rs = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!rs)
+		return (free((char *)s1), free((char *)s2), NULL);
+	i = 0;
+	j = 0;
+	while (s1[i])
+		rs[i++] = s1[j++];
+	j = 0;
+	while (s2[j])
+		rs[i++] = s2[j++];
+	rs[i] = '\0';
+	return (free((char *)s1), rs);
 }
+
 int	ft_strchr(char *s, int c)
 {
 	char	*tmp;
@@ -80,25 +75,23 @@ int	ft_strchr(char *s, int c)
 	}
 	return (-1);
 }
+
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*res;
+	char			*res;
 	char const		*src;
-	size_t		size ;
-	size_t	strlen_of_start;
-	size_t 	i;
+	size_t			strlen_of_start;
+	size_t			i;
 
 	src = &s[start];
 	strlen_of_start = ft_strlen(src);
 	if (len > strlen_of_start)
-		size = strlen_of_start + 1;
-	else
-		size = len + 1;
-	res = malloc(size);
+		len = strlen_of_start ;
+	res = malloc(len + 1);
 	if (!res)
 		return (NULL);
 	i = 0;
-	while (i < size -1)
+	while (i < len)
 	{
 		res[i] = src[i];
 		i++;
@@ -106,4 +99,3 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	res[i] = '\0';
 	return (res);
 }
-
